@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.school.api.entity.Student;
+import com.school.api.entity.FindStudentsByTeacherParams;
 import com.school.api.repository.SchoolRepository;
 
 @Service
@@ -18,7 +19,7 @@ public class SchoolService {
         this.schoolRepository = schoolRepository;
     }
 
-    public List<Student> findStudentsByTeacher(int facilitatorId) {
-        return schoolRepository.findStudentsByTeacher(facilitatorId);
+    public List<Student> findStudentsByTeacher(FindStudentsByTeacherParams params) {
+        return schoolRepository.findStudentsByTeacher(params);
     }
 }

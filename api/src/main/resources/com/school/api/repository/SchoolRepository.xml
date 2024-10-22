@@ -14,7 +14,7 @@
         </association>
     </resultMap>
 
-    <select id="findStudentsByTeacher" resultMap="studentsMap">
+    <select id="findStudentsByTeacher" parameterType="com.school.api.entity.FindStudentsByTeacherParams" resultMap="studentsMap">
         SELECT 
             s.student_id,
             s.name as student_name,
@@ -26,6 +26,16 @@
         JOIN 
             Classes c ON s.class_id = c.class_id
         WHERE 
-            c.teacher_id = #{teacherId};
+            c.teacher_id = #{facilitatorId}
+            <if test="nameLike != null">
+                AND s.name LIKE CONCAT('%', #{nameLike}, '%')
+            </if>
+            <if test="loginIdLike != null">
+                AND s.login_id LIKE CONCAT('%', #{loginIdLike}, '%')
+            </if>
+        ORDER BY 
+            ${sort} ${order}
+        LIMIT 
+            #{limit} OFFSET #{offset}
     </select>
 </mapper>

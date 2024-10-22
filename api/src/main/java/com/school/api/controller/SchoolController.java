@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school.api.entity.FindStudentsByTeacherParams;
 import com.school.api.entity.Student;
 import com.school.api.entity.Students;
 import com.school.api.service.SchoolService;
@@ -39,7 +40,8 @@ public class SchoolController {
         // log_print(facilitatorId, page, limit, sort, order, nameLike, loginIdLike);
         
         // パラメータの情報から生徒情報を取得
-        List<Student> studentList = schoolService.findStudentsByTeacher(facilitatorId);
+        FindStudentsByTeacherParams params = new FindStudentsByTeacherParams(facilitatorId, page, limit, sort, order, nameLike, loginIdLike);
+        List<Student> studentList = schoolService.findStudentsByTeacher(params);
 
         // 該当のデータが存在しない場合、404エラーを返す
         if (Objects.isNull(studentList) || studentList.size() == 0) {
