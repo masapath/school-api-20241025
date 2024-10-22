@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.school.api.repository.SchoolRepository">
+
+    <resultMap id="studentsMap" type="com.school.api.entity.Student">
+        <id property="id" column="student_id" />
+        <result property="name" column="student_name" />
+        <result property="loginId" column="login_id" />
+        <association property="classroom" javaType="com.school.api.entity.Classroom">
+            <id property="id" column="class_id"/>
+            <result property="name" column="class_name" />
+        </association>
+    </resultMap>
+
+    <select id="findStudentsByTeacher" resultMap="studentsMap">
+        SELECT 
+            s.student_id,
+            s.name as student_name,
+            s.login_id,
+            c.class_id,
+            c.class_name
+        FROM 
+            Students s
+        JOIN 
+            Classes c ON s.class_id = c.class_id
+        WHERE 
+            c.teacher_id = #{teacherId};
+    </select>
+</mapper>
