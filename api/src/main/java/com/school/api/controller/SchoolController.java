@@ -22,7 +22,7 @@ public class SchoolController {
         this.schoolService = schoolService;
     }
 
-    @GetMapping(value = "/students", produces = "application/json; charset=utf-8")
+    @GetMapping(value = "/students", produces = "application/json")
     public ResponseEntity<Students> students(
         @RequestParam("facilitator_id") Integer facilitatorId,
         @RequestParam(value = "page", defaultValue = "1") Integer page, 
@@ -32,13 +32,11 @@ public class SchoolController {
         @RequestParam(value = "name_like", required = false) String nameLike,
         @RequestParam(value = "loginId_like", required = false) String loginIdLike) {
         
-        // TODO:バリデーション用のハンドラーに移植する
+        // リクエストパラメータに教師ID(必須)がない場合、400エラーを返す
         if(Objects.isNull(facilitatorId)) {
             return ResponseEntity.badRequest().build();
         }
 
-        // log_print(facilitatorId, page, limit, sort, order, nameLike, loginIdLike);
-        
         // パラメータの情報から生徒情報を取得
         FindStudentsByTeacherParams params = new FindStudentsByTeacherParams(facilitatorId, page, limit, sort, order, nameLike, loginIdLike);
         List<Student> studentList = schoolService.findStudentsByTeacher(params);
@@ -52,16 +50,4 @@ public class SchoolController {
         return ResponseEntity.ok(students);
     }
 
-    private void log_print(Integer facilitatorId, Integer page
-                            , Integer limit, String sort, String order
-                            ,String nameLike, String loginIdLike){
-        // パラメータの値をコンソールに出力
-        System.out.println("Facilitator ID: " + facilitatorId);
-        System.out.println("Page: " + page);
-        System.out.println("Limit: " + limit);
-        System.out.println("Sort: " + sort);
-        System.out.println("Order: " + order);
-        System.out.println("Name like: " + nameLike);
-        System.out.println("Login ID like: " + loginIdLike);
-    }
 }

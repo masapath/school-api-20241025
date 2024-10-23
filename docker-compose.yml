@@ -7,14 +7,12 @@ services:
     working_dir: /srv
     ports: #ホスト側:コンテナ側
       - 48080:8080
-    tty: true #コンテナが正常終了せず、起動したままになる
+    tty: true
     volumes: #データ永続化
       - ./api:/srv:cached
     depends_on:
       db:
         condition: service_started #db起動後にappを起動
-    # networks:
-    #   - app-net
   db: # MySQL
     image: mysql:8.0
     volumes: #データ永続化(今回はSELECTのみだが今後の拡張に向け)
@@ -31,8 +29,3 @@ services:
       MYSQL_PASSWORD: docker_pass
       TZ: Asia/Tokyo
       LANG: ja_JP.UTF-8
-    # networks:
-    #   - app-net
-# networks:
-#   app-net:
-#     driver: bridge
